@@ -1,68 +1,49 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Lifecycle
 
-## Available Scripts
+What is the component lifecycle?
 
-In the project directory, you can run:
+Use slides:
 
-### `npm start`
+The component lifecycle has four main sections: 
+- initialization
+  - this is when the constructor fires and state and props are initialized.
+- mounting/rendering
+- updating
+- unmounting
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Build out a constructor with a count property on state. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Build a render method and console.log this.state.count. We see the value twice, because React strict mode renders twice: `StrictMode renders components twice (on dev but not production) in order to detect any problems with your code and warn you about them (which can be quite useful).`
 
-### `npm test`
+Build out componentDidMount and console.log inside of it. Notice that we see the render console.log first, then the componentDidMount console.log. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If we now update state inside of the componentDidMount, we see the console.log from the initial render, then the console.log from the componentDidMount, then the render console.log again. This is because setting state triggers a re-render. 
 
-### `npm run build`
+Build out a handler function that will increment the count variable by one. Create a button to invoke the handler function.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Build out a componentDidUpdate and console.log prevProps, prevState, and this.state.count.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Notice that every time we click the button to increment state, the componentDidUpdate will fire. This is because we are setting state. The component updates, triggering the componentDidUpdate lifecycle method, whenever state or props are changed. We can use prevProps and prevState to compare the old state and props values to the new values after the re-render. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Props
 
-### `npm run eject`
+Create a number property on state (using hooks or a constructor) and a handler function to increment it. 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Pass both the state property and the handler function to the Class and Hooks components. Add a button to invoke the handler function, and console.log in componentDidMount and the render method to see how the component re-renders when props change. Notice how we can see the previous value of props alongside the current value. 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Hooks and the lifecycle in a functional component
 
-## Learn More
+Now we will build out a functional component that will perform the same, using the useEffect hook to mimic the behavior of the lifecycle methods.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+When a functional component renders, the whole function is run. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+Declare a count state property using the useState hook. Console.log count anywhere in the componet - you will notice as we go through this exercise that the console.log will show whenever state or props changes, because when a functional component re-renders the entire function runs. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Create a useEffect method that will run once when the component (like a componentDidMount) mounts and console.log a message inside it. Set count inside the useEffect and notice how we see our component console.log, then the useEffect console.log, then the component console.log again, because we set state in the useEffect and thus triggered a re-render. 
 
-### Analyzing the Bundle Size
+Create a second useEffect - this one will function more like a componentDidUpdate instead of componentDidMount. Pass the count variable from state into the dependency array. Then create a button that will increment count when clicked. Notice how the useEffect runs when and only when count changes. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Create a second button that will invoke the biggify method from props. Pass in the number property from props into the dependency array of the second useEffect. The useEffect will now run whenever either count or number changes.
